@@ -101,7 +101,7 @@
             animation: bigRipple 0.55s ease-out forwards;
         }
 
-        /* PARTICLES - легкие */
+        /* PARTICLES */
         @keyframes floodOut {
             0% {
                 transform: translate(-50%, -50%) scale(0) rotate(0deg);
@@ -118,10 +118,10 @@
                 transform: translate(var(--tx), var(--ty)) scale(var(--fs)) rotate(var(--rot));
             }
             33% {
-                transform: translate(calc(var(--tx) + var(--sx)), calc(var(--ty) + var(--sy))) scale(var(--fs)) rotate(calc(var(--rot) + 3deg));
+                transform: translate(calc(var(--tx) + var(--sx)), calc(var(--ty) + var(--sy))) scale(var(--fs)) rotate(calc(var(--rot) + 2deg));
             }
             66% {
-                transform: translate(calc(var(--tx) - var(--sx)), var(--ty)) scale(var(--fs)) rotate(calc(var(--rot) - 2deg));
+                transform: translate(calc(var(--tx) - var(--sx)), var(--ty)) scale(var(--fs)) rotate(calc(var(--rot) - 1.5deg));
             }
         }
 
@@ -145,7 +145,7 @@
         @keyframes slideCard {
             from {
                 opacity: 0;
-                transform: translateY(24px) rotate(-0.5deg);
+                transform: translateY(20px) rotate(-0.5deg);
             }
             to {
                 opacity: 1;
@@ -156,7 +156,7 @@
         @keyframes slideBouq {
             from {
                 opacity: 0;
-                transform: translateX(30px);
+                transform: translateX(25px);
             }
             to {
                 opacity: 1;
@@ -167,7 +167,7 @@
         @keyframes fadeUp {
             from {
                 opacity: 0;
-                transform: translateY(12px);
+                transform: translateY(10px);
             }
             to {
                 opacity: 1;
@@ -176,16 +176,16 @@
         }
 
         .ce {
-            animation: slideCard .6s cubic-bezier(.34, 1.2, .64, 1) .15s both;
+            animation: slideCard .55s cubic-bezier(.34, 1.15, .64, 1) .12s both;
         }
         .be {
-            animation: slideBouq .6s cubic-bezier(.34, 1.1, .64, 1) .35s both;
+            animation: slideBouq .55s cubic-bezier(.34, 1.08, .64, 1) .3s both;
         }
         .bte {
-            animation: fadeUp .5s ease .7s both;
+            animation: fadeUp .45s ease .6s both;
         }
         .te {
-            animation: fadeUp .5s ease .08s both;
+            animation: fadeUp .45s ease .06s both;
         }
 
         /* PAPER */
@@ -253,7 +253,7 @@
                 opacity: .4;
             }
             50% {
-                opacity: .9;
+                opacity: .85;
             }
         }
 
@@ -264,11 +264,11 @@
             animation: ph 2.5s ease-in-out infinite;
         }
 
-        /* GIFS */
-        @keyframes gifPop {
+        /* EMOJI CARDS */
+        @keyframes emojiPop {
             from {
                 opacity: 0;
-                transform: scale(.9) translateY(8px);
+                transform: scale(.7) translateY(10px);
             }
             to {
                 opacity: 1;
@@ -276,14 +276,47 @@
             }
         }
 
-        .gif-card {
-            animation: gifPop .35s cubic-bezier(.34, 1.2, .64, 1) both;
-        }
-        .gifs-enter {
-            animation: fadeUp .5s ease .9s both;
+        @keyframes emojiFloat {
+            0%, 100% {
+                transform: translateY(0);
+            }
+            50% {
+                transform: translateY(-5px);
+            }
         }
 
-        /* Mobile optimizations */
+        @keyframes emojiPulse {
+            0%, 100% {
+                transform: scale(1);
+            }
+            50% {
+                transform: scale(1.08);
+            }
+        }
+
+        .emoji-card {
+            animation: emojiPop .4s cubic-bezier(.34, 1.3, .64, 1) both;
+            transition: transform 0.25s ease, box-shadow 0.25s ease;
+            cursor: default;
+        }
+
+        .emoji-card:active {
+            transform: scale(.94);
+        }
+
+        .emoji-icon {
+            animation: emojiFloat 3s ease-in-out infinite;
+            display: inline-block;
+        }
+
+        .emoji-icon.pulse {
+            animation: emojiFloat 3s ease-in-out infinite, emojiPulse 1.8s ease-in-out infinite;
+        }
+
+        .emojis-enter {
+            animation: fadeUp .5s ease .8s both;
+        }
+
         @media (max-width: 480px) {
             .paper {
                 padding: 22px 18px 20px !important;
@@ -292,6 +325,15 @@
             .env svg {
                 width: 220px !important;
                 height: 148px !important;
+            }
+
+            .emoji-card {
+                width: 75px !important;
+                padding: 8px 4px 6px !important;
+            }
+
+            .emoji-icon {
+                font-size: 2rem !important;
             }
         }
 
@@ -350,32 +392,32 @@
     const FNS = [rose, peony, daisy, sunflower, tulip];
     const HUES = [[355, 345, 15, 350, 5, 340], [320, 310, 330, 300, 340, 315], [200, 220, 180, 210, 190, 230], [42, 40, 45, 38, 44, 41], [0, 260, 120, 45, 300, 180]];
 
-    // ─── PRE-BUILD PARTICLES (150 шт вместо 260) ─────────────────
+    // ─── PRE-BUILD PARTICLES (120 шт) ─────────────────────────────
     const PARTICLES = (() => {
         const arr = [];
-        const total = 150; // уменьшено с 260
-        const waves = 10;
+        const total = 120;
+        const waves = 8;
         const perWave = total / waves;
         for (let i = 0; i < total; i++) {
             const wave = Math.floor(i / perWave);
             const inW = i % perWave;
             const ang = (inW / perWave) * 360 + wave * 13.8 + Math.random() * 16;
-            const dist = wave * 4.5 + 3 + Math.random() * (14 + wave * 1.5);
+            const dist = wave * 4 + 2.5 + Math.random() * (12 + wave * 1.2);
             const r = ang * Math.PI / 180;
             const fi = i % 5, hue = HUES[fi][Math.floor(Math.random() * HUES[fi].length)];
             arr.push({
                 tx: (Math.cos(r) * dist).toFixed(1) + 'vw',
-                ty: (Math.sin(r) * dist * .72).toFixed(1) + 'vh',
-                size: 28 + (Math.random() * 40 | 0), // меньше размер
-                fs: +(0.55 + Math.random() * 1.1 + (wave < 2 ? .35 : 0)).toFixed(2),
+                ty: (Math.sin(r) * dist * .7).toFixed(1) + 'vh',
+                size: 24 + (Math.random() * 34 | 0),
+                fs: +(0.5 + Math.random() * 1 + (wave < 2 ? .3 : 0)).toFixed(2),
                 rot: (Math.random() * 360 | 0) + 'deg',
-                dur: (0.35 + Math.random() * .45).toFixed(2) + 's',
-                dl: (wave * .018 + Math.random() * .06).toFixed(3) + 's',
-                sw: (2 + Math.random() * 1.8).toFixed(1) + 's',
-                sx: ((Math.random() - .5) * 10).toFixed(1) + 'px',
-                sy: ((Math.random() - .5) * 7).toFixed(1) + 'px',
-                fo: wave < 2 ? 1 : +(0.78 + Math.random() * .18).toFixed(2),
-                zi: 10 + (Math.random() * 20 | 0),
+                dur: (0.32 + Math.random() * .4).toFixed(2) + 's',
+                dl: (wave * .016 + Math.random() * .05).toFixed(3) + 's',
+                sw: (1.8 + Math.random() * 1.6).toFixed(1) + 's',
+                sx: ((Math.random() - .5) * 8).toFixed(1) + 'px',
+                sy: ((Math.random() - .5) * 6).toFixed(1) + 'px',
+                fo: wave < 2 ? 1 : +(0.75 + Math.random() * .2).toFixed(2),
+                zi: 10 + (Math.random() * 18 | 0),
                 html: FNS[fi](hue),
                 i
             });
@@ -385,14 +427,24 @@
 
     // ─── BOUQUET ──────────────────────────────────────────────────
     const BQ = [
-        {fn: peony, h: 320, x: 50, y: 22, s: 60, z: 5}, {fn: rose, h: 355, x: 28, y: 32, s: 50, z: 4},
-        {fn: rose, h: 10, x: 72, y: 30, s: 48, z: 4}, {fn: daisy, h: 210, x: 20, y: 48, s: 42, z: 3},
-        {fn: tulip, h: 300, x: 78, y: 44, s: 40, z: 3}, {fn: peony, h: 310, x: 58, y: 45, s: 44, z: 6},
-        {fn: sunflower, h: 42, x: 36, y: 50, s: 46, z: 5}, {fn: daisy, h: 200, x: 62, y: 58, s: 38, z: 4},
-        {fn: rose, h: 340, x: 84, y: 58, s: 36, z: 3}, {fn: tulip, h: 0, x: 16, y: 60, s: 34, z: 3},
-        {fn: peony, h: 325, x: 44, y: 62, s: 40, z: 7}, {fn: rose, h: 5, x: 70, y: 65, s: 36, z: 5},
+        {fn: peony, h: 320, x: 50, y: 22, s: 58, z: 5}, {fn: rose, h: 355, x: 28, y: 32, s: 48, z: 4},
+        {fn: rose, h: 10, x: 72, y: 30, s: 46, z: 4}, {fn: daisy, h: 210, x: 20, y: 48, s: 40, z: 3},
+        {fn: tulip, h: 300, x: 78, y: 44, s: 38, z: 3}, {fn: peony, h: 310, x: 58, y: 45, s: 42, z: 6},
+        {fn: sunflower, h: 42, x: 36, y: 50, s: 44, z: 5}, {fn: daisy, h: 200, x: 62, y: 58, s: 36, z: 4},
+        {fn: rose, h: 340, x: 84, y: 58, s: 34, z: 3}, {fn: tulip, h: 0, x: 16, y: 60, s: 32, z: 3},
+        {fn: peony, h: 325, x: 44, y: 62, s: 38, z: 7}, {fn: rose, h: 5, x: 70, y: 65, s: 34, z: 5},
     ];
     const BQ_HTML = BQ.map(f => f.fn(f.h));
+
+    // ─── EMOJI DATA ──────────────────────────────────────────────
+    const EMOJIS = [
+        {icon: '🤗', label: 'Обнимашки', color: '#f9a8c9', pulse: false},
+        {icon: '🐶', label: 'Гав = Люблю', color: '#fde68a', pulse: true},
+        {icon: '😘', label: 'Чмок!', color: '#f9a8c9', pulse: false},
+        {icon: '💕', label: 'Лавки лавки', color: '#fca5a5', pulse: true},
+        {icon: '🤔', label: 'Котик думает', color: '#fde68a', pulse: false},
+        {icon: '🌟', label: 'Ты лучшая!', color: '#fcd34d', pulse: true},
+    ];
 
     // ─── ENVELOPE SVG ─────────────────────────────────────────────
     function envSVG(open) {
@@ -424,7 +476,7 @@
             setTimeout(() => {
                 setRipple(true);
                 setPhase('burst');
-                setTimeout(() => setPhase('reveal'), 1700);
+                setTimeout(() => setPhase('reveal'), 1600);
             }, 430);
         }, [phase]);
 
@@ -789,6 +841,75 @@
                     ))
                 ),
 
+                // EMOJI CARDS SECTION
+                e('div', {
+                        className: 'emojis-enter',
+                        style: {position: 'relative', zIndex: 2, width: '100%', padding: '4px 4px 8px'}
+                    },
+                    e('p', {
+                        style: {
+                            fontFamily: 'Playfair Display,serif',
+                            fontStyle: 'italic',
+                            fontSize: '.72rem',
+                            color: '#9a7a4a',
+                            textAlign: 'center',
+                            marginBottom: 8,
+                            letterSpacing: '.06em'
+                        }
+                    }, '— специально для тебя 🎁 —'),
+                    e('div', {
+                        style: {
+                            display: 'flex',
+                            gap: 8,
+                            flexWrap: 'wrap',
+                            justifyContent: 'center',
+                            alignItems: 'stretch'
+                        }
+                    },
+                        EMOJIS.map((emo, i) => e('div', {
+                            key: i,
+                            className: 'emoji-card',
+                            style: {
+                                display: 'flex',
+                                flexDirection: 'column',
+                                alignItems: 'center',
+                                justifyContent: 'center',
+                                gap: 6,
+                                background: 'white',
+                                borderRadius: 12,
+                                padding: '12px 8px 10px',
+                                boxShadow: `0 4px 16px rgba(0,0,0,.07), 0 1px 4px ${emo.color}33`,
+                                width: 90,
+                                flexShrink: 0,
+                                border: `1px solid ${emo.color}22`,
+                                animation: `emojiPop .4s cubic-bezier(.34,1.3,.64,1) ${.08 + i * .07}s both`,
+                                transition: 'transform 0.2s ease, box-shadow 0.2s ease',
+                            }
+                        },
+                            e('span', {
+                                className: 'emoji-icon' + (emo.pulse ? ' pulse' : ''),
+                                style: {
+                                    fontSize: '2.4rem',
+                                    lineHeight: 1,
+                                    filter: 'drop-shadow(0 2px 4px rgba(0,0,0,.1))',
+                                    animationDelay: `${i * 0.15}s`
+                                }
+                            }, emo.icon),
+                            e('p', {
+                                style: {
+                                    fontFamily: 'Montserrat,sans-serif',
+                                    fontSize: '.5rem',
+                                    color: '#7a6a5a',
+                                    textAlign: 'center',
+                                    fontWeight: 500,
+                                    lineHeight: 1.25,
+                                    letterSpacing: '.02em'
+                                }
+                            }, emo.label)
+                        ))
+                    )
+                ),
+
                 // BUTTONS
                 e('div', {
                     className: 'bte',
@@ -833,82 +954,6 @@
                         },
                         onClick: () => setPhase('idle')
                     }, '🌱 Start Your Own Garden')
-                ),
-
-                // GIFS SECTION
-                e('div', {
-                        className: 'gifs-enter',
-                        style: {position: 'relative', zIndex: 2, width: '100%', padding: '4px 4px 8px'}
-                    },
-                    e('p', {
-                        style: {
-                            fontFamily: 'Playfair Display,serif',
-                            fontStyle: 'italic',
-                            fontSize: '.72rem',
-                            color: '#9a7a4a',
-                            textAlign: 'center',
-                            marginBottom: 6,
-                            letterSpacing: '.06em'
-                        }
-                    }, '— специально для тебя 🐾 —'),
-                    e('div', {
-                        style: {
-                            display: 'flex',
-                            gap: 6,
-                            flexWrap: 'wrap',
-                            justifyContent: 'center',
-                            alignItems: 'flex-end'
-                        }
-                    },
-                        ...[
-                            {src: 'https://media.tenor.com/2bTvPNPjJUUAAAAC/cat-hug.gif', cap: 'Обнимашки 🤗'},
-                            {src: 'https://media.tenor.com/bMHi1BhmKMMAAAAC/cute-dog.gif', cap: 'Гав = Люблю 🐶'},
-                            {src: 'https://media.tenor.com/nTm0WaIsMwkAAAAC/cat-kiss.gif', cap: 'Чмок! 😻'},
-                            {src: 'https://media.tenor.com/LxMEKJcywEYAAAAC/dog-love.gif', cap: 'Лавки лавки 💕'},
-                            {src: 'https://media.tenor.com/tLIFW8WjEHQAAAAC/cat-cute.gif', cap: 'Котик думает 💭'},
-                            {src: 'https://media.tenor.com/X8FNLHJ-B6AAAAAC/puppy-cute.gif', cap: 'Ты лучшая! 🌟'},
-                        ].map((g, i) => e('div', {
-                            key: i,
-                            className: 'gif-card',
-                            style: {
-                                display: 'flex',
-                                flexDirection: 'column',
-                                alignItems: 'center',
-                                gap: 3,
-                                background: 'white',
-                                borderRadius: 10,
-                                padding: '4px 4px 6px',
-                                boxShadow: '0 3px 12px rgba(0,0,0,.08)',
-                                width: 90,
-                                flexShrink: 0,
-                                animation: `fadeUp .4s ease ${.08 + i * .06}s both`,
-                            }
-                        },
-                            e('img', {
-                                src: g.src,
-                                alt: g.cap,
-                                loading: 'lazy',
-                                style: {
-                                    width: 78,
-                                    height: 64,
-                                    objectFit: 'cover',
-                                    borderRadius: 6,
-                                    display: 'block'
-                                },
-                                onError: (ev) => { ev.target.style.display = 'none'; }
-                            }),
-                            e('p', {
-                                style: {
-                                    fontFamily: 'Montserrat,sans-serif',
-                                    fontSize: '.48rem',
-                                    color: '#9a7a4a',
-                                    textAlign: 'center',
-                                    fontWeight: 500,
-                                    lineHeight: 1.2
-                                }
-                            }, g.cap)
-                        ))
-                    )
                 )
             )
         );
